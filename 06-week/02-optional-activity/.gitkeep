@@ -1,1 +1,87 @@
-doflec
+class Persona:
+    def __init__(self, documento, nombre, correo):
+        # Atributos privados (encapsulamiento)
+        self.__documento = documento
+        self.__nombre = nombre
+        self.__correo = correo
+
+    # --- GETTERS Y SETTERS CON VALIDACIONES ---
+    @property
+    def documento(self):
+        return self.__documento
+
+    @documento.setter
+    def documento(self, valor):
+        if len(str(valor)) >= 5:
+            self.__documento = valor
+        else:
+            print("Error: El documento debe tener al menos 5 dígitos.")
+
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @nombre.setter
+    def nombre(self, valor):
+        if len(valor) >= 2:
+            self.__nombre = valor
+        else:
+            print("Error: Nombre demasiado corto.")
+
+    @property
+    def correo(self):
+        return self.__correo
+
+    @correo.setter
+    def correo(self, valor):
+        if "@" in str(valor):
+            self.__correo = valor
+        else:
+            print("Error: Formato de correo inválido.")
+
+    def ficha(self):
+        return f"Documento: {self.__documento}\nNombre: {self.__nombre}\nCorreo: {self.__correo}"
+
+
+class Docente(Persona):
+    def __init__(self, documento, nombre, correo, area):
+        # Uso de super() para inicializar atributos de la clase padre
+        super().__init__(documento, nombre, correo)
+        self.area = area
+
+    def fichaDocente(self):
+        print("--- FICHA DOCENTE ---")
+        # Reutilizamos el método ficha() del padre
+        print(self.ficha())
+        print(f"Área/Depto: {self.area}\n")
+
+
+class Administrativo(Persona):
+    def __init__(self, documento, nombre, correo, cargo):
+        super().__init__(documento, nombre, correo)
+        self.cargo = cargo
+
+    def fichaAdministrativo(self):
+        print("--- FICHA ADMINISTRATIVO ---")
+        print(self.ficha())
+        print(f"Cargo: {self.cargo}\n")
+
+
+# --- CLASE APP (Bloque de ejecución) ---
+if __name__ == "__main__":
+    # 1. Crear 1 Persona
+    persona1 = Persona("11112222", "Juan Pérez", "juan.perez@correo.com")
+    print("--- FICHA PERSONA ---")
+    print(persona1.ficha() + "\n")
+
+    # 2. Crear 1 Docente
+    profe = Docente("33334444", "Dra. Maria Lopez", "m.lopez@universidad.edu", "Matemáticas")
+    profe.fichaDocente()
+
+    # 3. Crear 1 Administrativo
+    admin = Administrativo("55556666", "Carlos Ruiz", "c.ruiz@universidad.edu", "Director Académico")
+    admin.fichaAdministrativo()
+
+    # Ejemplo de validación
+    print("Probando validación de setter (correo sin @):")
+    admin.correo = "correo_invalido"
