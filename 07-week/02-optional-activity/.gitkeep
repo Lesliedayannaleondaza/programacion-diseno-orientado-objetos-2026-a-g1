@@ -1,87 +1,131 @@
-class Persona:
-    def __init__(self, documento, nombre, correo):
-        # Atributos privados (encapsulamiento)
-        self.__documento = documento
-        self.__nombre = nombre
-        self.__correo = correo
+package com.corhuila.poo.semana7;
 
-    # --- GETTERS Y SETTERS CON VALIDACIONES ---
-    @property
-    def documento(self):
-        return self.__documento
+import java.util.ArrayList;
+import java.util.List;
 
-    @documento.setter
-    def documento(self, valor):
-        if len(str(valor)) >= 5:
-            self.__documento = valor
-        else:
-            print("Error: El documento debe tener al menos 5 dígitos.")
+/**
+ * CLASE BASE ABSTRACTA: Envio
+ */
+abstract class Envio {
+    private String codigo;
+    private double pesoKg;
 
-    @property
-    def nombre(self):
-        return self.__nombre
+    public Envio(String codigo, double pesoKg) {
+        setCodigo(codigo);
+        setPesoKg(pesoKg);
+    }
 
-    @nombre.setter
-    def nombre(self, valor):
-        if len(valor) >= 2:
-            self.__nombre = valor
-        else:
-            print("Error: Nombre demasiado corto.")
+    public String getCodigo() { return codigo; }
+    public void setCodigo(String codigo) {
+        if (codigo == null || codigo.trim().isEmpty()) {
+            throw new IllegalArgumentException("El código no puede estar vacío.");
+        }
+        this.codigo = codigo;
+    }
 
-    @property
-    def correo(self):
-        return self.__correo
+    public double getPesoKg() { return pesoKg; }
+    public void setPesoKg(double pesoKg) {
+        if (pesoKg <= 0) {
+            throw new IllegalArgumentException("El peso debe ser mayor a 0.");
+        }
+        this.pesoKg = pesoKg;
+    }
 
-    @correo.setter
-    def correo(self, valor):
-        if "@" in str(valor):
-            self.__correo = valor
-        else:
-            print("Error: Formato de correo inválido.")
+    // Método abstracto para ser sobrescrito (Polimorfismo)
+    public abstract double calcularCosto();
 
-    def ficha(self):
-        return f"Documento: {self.__documento}\nNombre: {self.__nombre}\nCorreo: {self.__correo}"
+    public String resumen() {
+        return String.format("[Código: %s, Peso: %.2f kg, Costo: $%.2f]", 
+                codigo, pesoKg, calcularCosto());
+    }
+}
 
+/**
+ * SUBCLASE: EnvioEstandar
+ */
+class EnvioEstandar extends Envio {
+    public EnvioEstandar(String codigo, double pesoKg) {
+        super(codigo, pesoKg);
+    }
 
-class Docente(Persona):
-    def __init__(self, documento, nombre, correo, area):
-        # Uso de super() para inicializar atributos de la clase padre
-        super().__init__(documento, nombre, correo)
-        self.area = area
+    @Override
+    public double calcularCosto() {
+        return 8000 + (getPesoKg() * 2000);
+    }
 
-    def fichaDocente(self):
-        print("--- FICHA DOCENTE ---")
-        # Reutilizamos el método ficha() del padre
-        print(self.ficha())
-        print(f"Área/Depto: {self.area}\n")
+    @Override
+    public String resumen() {
+        return "Estándar - " + super.resumen();
+    }
+}
 
+/**
+ * SUBCLASE: EnvioExpress
+ */
+class EnvioExpress extends Envio {
+    public EnvioExpress(String codigo, double pesoKg) {
+        super(codigo, pesoKg);
+    }
 
-class Administrativo(Persona):
-    def __init__(self, documento, nombre, correo, cargo):
-        super().__init__(documento, nombre, correo)
-        self.cargo = cargo
+    @Override
+    public double calcularCosto() {
+        return 15000 + (getPesoKg() * 3500);
+    }
 
-    def fichaAdministrativo(self):
-        print("--- FICHA ADMINISTRATIVO ---")
-        print(self.ficha())
-        print(f"Cargo: {self.cargo}\n")
+    @Override
+    public String resumen() {
+        return "Express  - " + super.resumen();
+    }
+}
 
+/**
+ * SUBCLASE: EnvioInternacional
+ */
+class EnvioInternacional extends Envio {
+    private String paisDestino;
 
-# --- CLASE APP (Bloque de ejecución) ---
-if __name__ == "__main__":
-    # 1. Crear 1 Persona
-    persona1 = Persona("11112222", "Juan Pérez", "juan.perez@correo.com")
-    print("--- FICHA PERSONA ---")
-    print(persona1.ficha() + "\n")
+    public EnvioInternacional(String codigo, double pesoKg, String paisDestino) {
+        super(codigo, pesoKg);
+        this.paisDestino = paisDestino;
+    }
 
-    # 2. Crear 1 Docente
-    profe = Docente("33334444", "Dra. Maria Lopez", "m.lopez@universidad.edu", "Matemáticas")
-    profe.fichaDocente()
+    @Override
+    public double calcularCosto() {
+        return 30000 + (getPesoKg() * 6000);
+    }
 
-    # 3. Crear 1 Administrativo
-    admin = Administrativo("55556666", "Carlos Ruiz", "c.ruiz@universidad.edu", "Director Académico")
-    admin.fichaAdministrativo()
+    @Override
+    public String resumen() {
+        return String.format("Internac - %s [Destino: %s]", super.resumen(), paisDestino);
+    }
+}
 
-    # Ejemplo de validación
-    print("Probando validación de setter (correo sin @):")
-    admin.correo = "correo_invalido"
+/**
+ * CLASE PRINCIPAL: App
+ */
+public class App {
+    public static void main(String[] args) {
+        // Lista polimórfica de envíos
+        List<Envio> envios = new ArrayList<>();
+
+        // Instanciación de diferentes tipos de envíos
+        envios.add(new EnvioEstandar("EST-001", 2.5));
+        envios.add(new EnvioExpress("EXP-002", 1.2));
+        envios.add(new EnvioInternacional("INT-003", 5.0, "España"));
+        envios.add(new EnvioEstandar("EST-004", 10.0));
+
+        double costoTotal = 0;
+
+        System.out.println("=== RESUMEN DE ENVÍOS POLIMÓRFICOS ===");
+        
+        // Iteración polimórfica: se llama a calcularCosto() sin importar el tipo específico
+        for (Envio envio : envios) {
+            System.out.println(envio.resumen());
+            costoTotal += envio.calcularCosto();
+        }
+
+        System.out.println("--------------------------------------");
+        System.out.printf("COSTO TOTAL DE TODOS LOS ENVÍOS: $%.2f%n", costoTotal);
+        System.out.println("======================================");
+    }
+}
