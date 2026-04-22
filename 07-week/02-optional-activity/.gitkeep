@@ -1,8 +1,3 @@
-package com.corhuila.poo.semana7;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * CLASE BASE ABSTRACTA: Envio
  */
