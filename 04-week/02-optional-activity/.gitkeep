@@ -1,0 +1,94 @@
+class ReservaHotel {
+    // Atributos privados
+    private String codigo;
+    private String nombreHuesped;
+    private int noches;
+    private double valorNoche;
+    private boolean incluyeDesayuno;
+
+    // Constructor Principal: Recibe todos los datos
+    public ReservaHotel(String codigo, String nombreHuesped, int noches, double valorNoche, boolean incluyeDesayuno) {
+        // Validaciones mínimas
+        this.codigo = (codigo != null && !codigo.isEmpty()) ? codigo : "S/C";
+        this.nombreHuesped = (nombreHuesped != null && !nombreHuesped.isEmpty()) ? nombreHuesped : "Anónimo";
+        this.noches = (noches > 0) ? noches : 1;
+        this.valorNoche = (valorNoche > 0) ? valorNoche : 0;
+        this.incluyeDesayuno = incluyeDesayuno;
+    }
+
+    // Constructor Alterno: Delega al principal usando this(...)
+    public ReservaHotel(String codigo, String nombreHuesped, int noches, double valorNoche) {
+        // Regla: incluyeDesayuno queda en false por defecto
+        this(codigo, nombreHuesped, noches, valorNoche, false);
+    }
+
+    // Método para calcular el total
+    public double calcularTotal() {
+        return noches * valorNoche;
+    }
+
+    // Representación toString()
+    @Override
+    public String toString() {
+        String desayunoStr = incluyeDesayuno ? "SÍ" : "NO";
+        return String.format(
+            "RESERVA [%s]\n" +
+            " - Huésped: %s\n" +
+            " - Noches: %d\n" +
+            " - Desayuno: %s\n" +
+            " - TOTAL A PAGAR: $%.2f\n",
+            codigo, nombreHuesped, noches, desayunoStr, calcularTotal()
+        );
+    }
+}
+
+public class HotelApp {
+    public static void main(String[] args) {
+        System.out.println("=== SISTEMA DE RESERVAS HOTEL - SEMANA 4 ===\n");
+
+        // Crear al menos 3 reservas usando System.out.println(reserva)
+        
+        // 1. Reserva completa (Constructor Principal)
+        ReservaHotel r1 = new ReservaHotel("R-101", "Juan Perez", 3, 150000.0, true);
+        
+        // 2. Reserva sin desayuno (Constructor Alterno)
+        ReservaHotel r2 = new ReservaHotel("R-102", "Maria Lopez", 2, 120000.0);
+        
+        // 3. Reserva con datos por defecto (Validación de constructor)
+        ReservaHotel r3 = new ReservaHotel("", "", -1, 200000.0, true);
+
+        // Impresión de reservas
+        System.out.println(r1);
+        System.out.println(r2);
+        System.out.println(r3);
+
+        System.out.println("=== FIN DE LA ACTIVIDAD ===");
+    }
+}
+
+/**
+ * ---------------------------------------------------------
+ * 3. SALIDA EN CONSOLA (EVIDENCIA DE EJECUCIÓN)
+ * ---------------------------------------------------------
+ * === SISTEMA DE RESERVAS HOTEL - SEMANA 4 ===
+ * 
+ * RESERVA [R-101]
+ *  - Huésped: Juan Perez
+ *  - Noches: 3
+ *  - Desayuno: SÍ
+ *  - TOTAL A PAGAR: $450000.00
+ * 
+ * RESERVA [R-102]
+ *  - Huésped: Maria Lopez
+ *  - Noches: 2
+ *  - Desayuno: NO
+ *  - TOTAL A PAGAR: $240000.00
+ * 
+ * RESERVA [S/C]
+ *  - Huésped: Anónimo
+ *  - Noches: 1
+ *  - Desayuno: SÍ
+ *  - TOTAL A PAGAR: $200000.00
+ * 
+ * === FIN DE LA ACTIVIDAD ===
+ */
