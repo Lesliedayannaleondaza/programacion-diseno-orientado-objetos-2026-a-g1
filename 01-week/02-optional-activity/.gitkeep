@@ -1,0 +1,61 @@
+class Tarea {
+    // Atributos privados según requerimiento (Encapsulación)
+    private String titulo;
+    private String descripcion;
+    private boolean completada;
+
+    // Constructor
+    public Tarea(String titulo, String descripcion) {
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.completada = false; // Estado inicial: pendiente
+    }
+
+    // Métodos para controlar el estado
+    public void marcarComoHecha() {
+        this.completada = true;
+    }
+
+    public void marcarComoPendiente() {
+        this.completada = false;
+    }
+
+    // Método para mostrar el resumen del estado
+    public String resumen() {
+        String estado = completada ? "[Completada]" : "[Pendiente]";
+        return String.format("%-12s | %-15s: %s", estado, titulo, descripcion);
+    }
+}
+
+// Clase principal que contiene el método main
+public class AppUnificada {
+    public static void main(String[] args) {
+        System.out.println("====================================================");
+        System.out.println("       GESTOR DE TAREAS - ACTIVIDAD POO             ");
+        System.out.println("====================================================\n");
+
+        // 1. Crear al menos 3 objetos Tarea
+        Tarea t1 = new Tarea("Instalar JDK", "Configurar el entorno Java");
+        Tarea t2 = new Tarea("Crear Proyecto", "Estructurar el paquete y las clases");
+        Tarea t3 = new Tarea("Código POO", "Implementar lógica de Tarea y App");
+
+        // 2. Imprimir estado inicial
+        System.out.println(">>> ESTADO INICIAL DE LAS TAREAS:");
+        System.out.println(t1.resumen());
+        System.out.println(t2.resumen());
+        System.out.println(t3.resumen());
+
+        // 3. Ejecutar métodos (Cambios de estado)
+        System.out.println("\n... Procesando cambios de estado ...\n");
+        t1.marcarComoHecha();
+        t3.marcarComoHecha();
+
+        // 4. Imprimir estado después de los cambios
+        System.out.println(">>> ESTADO FINAL DESPUÉS DE CAMBIOS:");
+        System.out.println(t1.resumen());
+        System.out.println(t2.resumen());
+        System.out.println(t3.resumen());
+        
+        System.out.println("\n====================================================");
+    }
+}
