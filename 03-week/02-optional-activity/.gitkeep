@@ -1,0 +1,102 @@
+class TarjetaTransporte {
+    // Atributos privados (Encapsulamiento)
+    private String codigo;
+    private double saldo;
+    private boolean activa;
+
+    // Constructor: Recibe codigo y saldoInicial
+    public TarjetaTransporte(String codigo, double saldoInicial) {
+        this.codigo = codigo;
+        // Regla: Saldo inicial no puede ser negativo
+        this.saldo = (saldoInicial >= 0) ? saldoInicial : 0;
+        this.activa = true; // Por defecto inicia activa
+    }
+
+    // Método recargar: Monto debe ser > 0
+    public void recargar(double monto) {
+        if (monto > 0) {
+            this.saldo += monto;
+            System.out.println("[RECARGA] Exito: Se recargaron $" + monto);
+        } else {
+            System.out.println("[ERROR] Recarga: El monto debe ser mayor a 0.");
+        }
+    }
+
+    // Método pagarPasaje: Varias validaciones
+    public void pagarPasaje(double valorPasaje) {
+        if (!activa) {
+            System.out.println("[ERROR] Pago: La tarjeta está desactivada.");
+        } else if (valorPasaje <= 0) {
+            System.out.println("[ERROR] Pago: Valor de pasaje inválido.");
+        } else if (saldo < valorPasaje) {
+            System.out.println("[ERROR] Pago: Saldo insuficiente (Saldo actual: $" + saldo + ")");
+        } else {
+            this.saldo -= valorPasaje;
+            System.out.println("[PAGO] Exito: Pasaje pagado. Nuevo saldo: $" + saldo);
+        }
+    }
+
+    // Métodos de control
+    public void activar() { this.activa = true; System.out.println("-> Tarjeta ACTIVADA"); }
+    public void desactivar() { this.activa = false; System.out.println("-> Tarjeta DESACTIVADA"); }
+    public double getSaldo() { return this.saldo; }
+    
+    public void resumen() {
+        String estado = activa ? "ACTIVA" : "INACTIVA";
+        System.out.println("RESUMEN | Codigo: " + codigo + " | Saldo: $" + saldo + " | Estado: " + estado);
+    }
+}
+
+public class TransporteApp {
+    public static void main(String[] args) {
+        System.out.println("=== SISTEMA DE TRANSPORTE - SEMANA 3 ===\n");
+
+        // Crear instancia
+        TarjetaTransporte miTarjeta = new TarjetaTransporte("T-100", 2000.0);
+        miTarjeta.resumen();
+
+        // CASOS DE PRUEBA
+        System.out.println("\n--- Ejecutando Casos de Prueba ---");
+
+        // 1. Recarga válida
+        miTarjeta.recargar(5000.0);
+
+        // 2. Pago válido
+        miTarjeta.pagarPasaje(2500.0);
+
+        // 3. Pago sin saldo (intentar pagar algo muy caro)
+        miTarjeta.pagarPasaje(10000.0);
+
+        // 4. Pago con tarjeta desactivada
+        miTarjeta.desactivar();
+        miTarjeta.pagarPasaje(2500.0);
+
+        // 5. Reactivar y verificar
+        System.out.println("");
+        miTarjeta.activar();
+        miTarjeta.resumen();
+
+        System.out.println("\n=== FIN DE LA PRUEBA ===");
+    }
+}
+
+/**
+ * ---------------------------------------------------------
+ * 3. SALIDA EN CONSOLA (EVIDENCIA DE EJECUCIÓN)
+ * ---------------------------------------------------------
+ * === SISTEMA DE TRANSPORTE - SEMANA 3 ===
+ * 
+ * RESUMEN | Codigo: T-100 | Saldo: $2000.0 | Estado: ACTIVA
+ * 
+ * --- Ejecutando Casos de Prueba ---
+ * [RECARGA] Exito: Se recargaron $5000.0
+ * [PAGO] Exito: Pasaje pagado. Nuevo saldo: $4500.0
+ * [ERROR] Pago: Saldo insuficiente (Saldo actual: $4500.0)
+ * -> Tarjeta DESACTIVADA
+ * [ERROR] Pago: La tarjeta está desactivada.
+ * 
+ * -> Tarjeta ACTIVADA
+ * RESUMEN | Codigo: T-100 | Saldo: $4500.0 | Estado: ACTIVA
+ * 
+ * === FIN DE LA PRUEBA ===
+ */
