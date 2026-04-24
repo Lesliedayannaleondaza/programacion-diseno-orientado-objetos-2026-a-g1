@@ -1,0 +1,59 @@
+class Producto {
+    String nombre;
+    double precio;
+
+    public Producto(String nombre, double precio) {
+        this.nombre = nombre;
+        this.precio = precio;
+    }
+}
+
+public class Semana2_Completo {
+    public static void main(String[] args) {
+        System.out.println("=== INICIO DE LA ACTIVIDAD SEMANA 2 ===\n");
+
+        // R2. Crear 3 instancias con 'new'
+        Producto p1 = new Producto("Laptop", 1200.50);
+        Producto p2 = new Producto("Mouse", 25.00);
+        Producto p3 = new Producto("Teclado", 45.00);
+
+        System.out.println("Instancias creadas:");
+        System.out.println("p1: " + p1.nombre + " ($" + p1.precio + ")");
+        System.out.println("p2: " + p2.nombre + " ($" + p2.precio + ")");
+        System.out.println("p3: " + p3.nombre + " ($" + p3.precio + ")\n");
+
+        // R3. Probar referencias (p2 = p1)
+        System.out.println("--- Ejecutando: p2 = p1 ---");
+        p2 = p1; 
+        System.out.println("Ahora p2 apunta a: " + p2.nombre);
+        System.out.println("¿p1 y p2 son el mismo objeto?: " + (p1 == p2) + "\n");
+
+        // R4. Probar null
+        System.out.println("--- Probando Referencia Null ---");
+        Producto pNull = null;
+        System.out.println("Valor de pNull: " + pNull);
+        
+        System.out.println("\n=== FIN DE LA ACTIVIDAD ===");
+    }
+}
+
+/**
+ * ---------------------------------------------------------
+ * 3. SALIDA EN CONSOLA ESPERADA (EVIDENCIA)
+ * ---------------------------------------------------------
+ * === INICIO DE LA ACTIVIDAD SEMANA 2 ===
+ * 
+ * Instancias creadas:
+ * p1: Laptop ($1200.5)
+ * p2: Mouse ($25.0)
+ * p3: Teclado ($45.0)
+ * 
+ * --- Ejecutando: p2 = p1 ---
+ * Ahora p2 apunta a: Laptop
+ * ¿p1 y p2 son el mismo objeto?: true
+ * 
+ * --- Probando Referencia Null ---
+ * Valor de pNull: null
+ * 
+ * === FIN DE LA ACTIVIDAD ===
+ */
