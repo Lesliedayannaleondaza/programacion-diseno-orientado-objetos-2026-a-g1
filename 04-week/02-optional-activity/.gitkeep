@@ -1,4 +1,4 @@
-class ReservaHotel {
+ class ReservaHotel {
     // Atributos privados
     private String codigo;
     private String nombreHuesped;
