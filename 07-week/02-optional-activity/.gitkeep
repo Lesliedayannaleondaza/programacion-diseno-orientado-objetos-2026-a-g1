@@ -1,6 +1,3 @@
-/**
- * CLASE BASE ABSTRACTA: Envio
- */
 abstract class Envio {
     private String codigo;
     private double pesoKg;
