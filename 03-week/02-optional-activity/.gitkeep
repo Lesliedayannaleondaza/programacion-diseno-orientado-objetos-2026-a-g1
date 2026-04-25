@@ -1,4 +1,4 @@
-class TarjetaTransporte {
+ class TarjetaTransporte {
     // Atributos privados (Encapsulamiento)
     private String codigo;
     private double saldo;
