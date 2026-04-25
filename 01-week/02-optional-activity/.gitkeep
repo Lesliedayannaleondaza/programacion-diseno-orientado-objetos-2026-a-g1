@@ -1,4 +1,4 @@
-class Tarea {
+ class Tarea {
     // Atributos privados según requerimiento (Encapsulación)
     private String titulo;
     private String descripcion;
